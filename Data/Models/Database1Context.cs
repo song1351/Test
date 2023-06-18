@@ -18,11 +18,27 @@ namespace Data.Models
         {
         }
 
+        public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<PurchaseOrderDetail> PurchaseOrderDetail { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Scaffolding:ConnectionString", "Data Source=(local);Initial Catalog=Database1;Integrated Security=true");
+
+            modelBuilder.Entity<Orders>(entity =>
+            {
+                entity.Property(e => e.ClientName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.CookieName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.OrderDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UnitPrice).HasColumnType("decimal(10, 2)");
+            });
 
             modelBuilder.Entity<PurchaseOrderDetail>(entity =>
             {

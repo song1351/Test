@@ -7,10 +7,9 @@ namespace Data.Models
 {
     public partial class PurchaseOrderDetail
     {
-        public int? PurchaseOrderId { get; set; }
+        public int PurchaseOrderId { get; set; }
         public decimal? UnitPrice { get; set; }
         public short? OrderQty { get; set; }
-
         public decimal? TotalAmount => UnitPrice * OrderQty;
     }
 }

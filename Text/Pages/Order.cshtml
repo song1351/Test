@@ -1,0 +1,118 @@
+﻿@page
+@model Text.Pages.OrderModel
+@{
+}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Order Form</title>
+</head>
+<body>
+    <form method="post" asp-page-handler="OnPost">
+        <h3>BB COOKIES ORDER FORM</h3>
+        <div class="cookiename">
+            <label>
+                Client Name:
+            </label>
+            <input type="text" name="ClientName" style="background-color: antiquewhite;" ; />
+        </div>
+
+        <div>
+            <h4>
+                Cookie:
+            </h4>
+            <input type="checkbox" id="cookie1" name="Cookie1" value="cookie1">
+            <label for="cookie1"> Butter cookie (RM 5 per unit) </label><br>
+            <input type="checkbox" id="cookie2" name="Cookie2" value="cookie2">
+            <label for="cookie2"> Kuih Bangkit (RM 6 per unit)</label><br>
+            <input type="checkbox" id="cookie3" name="Cookie3" value="cookie3">
+            <label for="cookie3"> Pineapple (RM 7 per unit)</label><br><br>
+        </div>
+
+        <div>
+            <label>
+                Quantity:
+            </label>
+            <input type="text" name="Quantity" />
+        </div>
+        <br>
+        <div>
+            <button type="button" onclick="myFunction()">Send Order</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+
+    <div>
+        <h3>Order Summary:</h3>
+        @if (TempData["OrderSummary"] != null)
+        {
+            <pre>@TempData["OrderSummary"]</pre>
+        }
+    </div>
+
+    <div>
+        <h3>Orders from Database:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Client Name</th>
+                    <th>Cookie Name</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Order Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Orders)
+                {
+                    <tr>
+                        <td>@order.ClientName</td>
+                        <td>@order.CookieName</td>
+                        <td>@order.UnitPrice</td>
+                        <td>@order.Quantity</td>
+                        <td>@order.OrderDate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function myFunction() {
+            var clientName = document.getElementsByName("ClientName")[0].value;
+
+            var totalPrice = 0;
+            var orderSummary = "";
+
+            if (document.getElementById("cookie1").checked) {
+                var butterCookiePrice = 5;
+                var butterCookieQty = parseInt(document.getElementsByName("Quantity")[0].value);
+                orderSummary += "Butter cookie (" + butterCookieQty + " units) - RM " + butterCookiePrice + " per unit\n";
+                totalPrice += butterCookiePrice * butterCookieQty;
+            }
+            if (document.getElementById("cookie2").checked) {
+                var kuihBangkitPrice = 6;
+                var kuihBangkitQty = parseInt(document.getElementsByName("Quantity")[0].value);
+                orderSummary += "Kuih Bangkit (" + kuihBangkitQty + " units) - RM " + kuihBangkitPrice + " per unit\n";
+                totalPrice += kuihBangkitPrice * kuihBangkitQty;
+            }
+            if (document.getElementById("cookie3").checked) {
+                var pineapplePrice = 7;
+                var pineappleQty = parseInt(document.getElementsByName("Quantity")[0].value);
+                orderSummary += "Pineapple (" + pineappleQty + " units) - RM " + pineapplePrice + " per unit\n";
+                totalPrice += pineapplePrice * pineappleQty;
+            }
+
+            // Display the order summary and total price
+            alert("Order Summary:\nClient Name: " + clientName + "\n\n" + orderSummary + "\nTotal Price: RM " + totalPrice.toFixed(2));
+
+            // Find the form element
+            var form = document.querySelector('form');
+
+            // Submit the form
+            form.submit();
+        }
+    </script>
+</body>
+</html>
